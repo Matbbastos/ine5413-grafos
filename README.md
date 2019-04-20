@@ -5,7 +5,7 @@ Dependências:
 
 ## Para instalar
 
-    ```bash
+    ```
     pip3 install docopt
     ```
 
