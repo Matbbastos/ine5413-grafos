@@ -1,5 +1,3 @@
-
-
 def algoritmoDeHierholzer(grafo):
     qtdDeArestas = grafo.qtdArestas()
     arestasVisitadas = [False] * qtdDeArestas
