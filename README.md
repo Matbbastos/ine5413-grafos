@@ -5,9 +5,9 @@ Dependências:
 
 ## Para instalar
 
-    '''bash
+    ```bash
     pip3 install docopt
-    '''
+    ```
 
 ## Uso do arquivo mais.py
 
