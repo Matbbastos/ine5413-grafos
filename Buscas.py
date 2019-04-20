@@ -1,4 +1,3 @@
-import pprint
 
 
 def algoritmoDeHierholzer(grafo):
@@ -99,7 +98,7 @@ def buscaEmLargura(grafo, verticeInicial):
     while len(filaIterativa) != 0:
         verticeAtual = filaIterativa.pop(0)
         listaVizinhos = grafo.vizinhos(verticeAtual)
-        for vizinho, peso in listaVizinhos.items():
+        for vizinho in listaVizinhos:
             if not foiVisitado[vizinho]:
                 foiVisitado[vizinho] = True
                 distanciaDeS[vizinho] = distanciaDeS[verticeAtual] + 1
