@@ -1,5 +1,6 @@
-import pprint
 import copy
+
+
 class Grafo:
     # vertices = { v1: {rotulo: "nome", v2:6,indexDasArestas:[5,6]}, v2: {rotulo: "nome", v3:5, v1:6}}
     # arestas [ (v1, v2, 6) (v2, v3, 2)]
