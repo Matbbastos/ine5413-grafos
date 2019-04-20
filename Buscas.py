@@ -9,9 +9,19 @@ def algoritmoDeHierholzer(grafo):
     temCicloEuleriano, ciclo = buscaSubcicloEuleriano(grafo, vertice, arestasVisitadas)
 
     if not temCicloEuleriano or len(list(filter(lambda x: not x, arestasVisitadas))) > 0:
-        return False, None
+        existe, resultado = False, None
     else:
-        return True, ciclo
+        existe, resultado = True, ciclo
+    printaCiclo(existe, resultado)
+    return existe, resultado
+
+
+def printaCiclo(existe, resultado):
+    if existe:
+        print(1)
+        print(str(resultado)[1:-1])
+    else:
+        print(0)
 
 
 def buscaSubcicloEuleriano(grafo, vertice, foiVisitada):
@@ -84,7 +94,7 @@ def buscaEmLargura(grafo, verticeInicial):
     distanciaDeS[verticeInicial] = 0  # distância até s = 0
     filaIterativa = [verticeInicial]  # enfila vértice s
 
-    listaNiveis = {}
+    listaNiveis = {0: [verticeInicial]}
 
     while len(filaIterativa) != 0:
         verticeAtual = filaIterativa.pop(0)
@@ -100,7 +110,8 @@ def buscaEmLargura(grafo, verticeInicial):
                 vizinhosDoNivel.append(vizinho)
                 listaNiveis.update({distanciaDeS[vizinho]: vizinhosDoNivel})
 
-    pprint.pprint(listaNiveis)
+    printBuscaEmLargura(listaNiveis)
+
 
     # for nivel in listaNiveis:
     #     print(listaNiveis.get(nivel))
@@ -108,53 +119,54 @@ def buscaEmLargura(grafo, verticeInicial):
     return (distanciaDeS, antecessores)
 
 
-def pegaIndiceDoMenorValor(verticeDict):
-    # {1:1.0,2:3.4}
-    menorDistancia = 99999999
-    indiceDaMenorDistancia = 0
-    for indice, value in verticeDict.items():
-        if value < menorDistancia:
-            menorDistancia = value
-            indiceDaMenorDistancia = indice
-    return indiceDaMenorDistancia
-
+def printBuscaEmLargura(listaNiveis):
+    for key, value in listaNiveis.items():
+        print(str(key) + ":", str(value)[1:-1])
 
 
 def dijkstra(grafo, verticeInicial):
     qtdVertices = grafo.qtdVertices()
-    distancias = [999999999.9] * (qtdVertices + 1)
+    distanciaDoInicial = [999999999.9] * (qtdVertices + 1)
     antecessores = [None] * (qtdVertices + 1)
     foiVisitado = [False] * (qtdVertices + 1)
     foiVisitado[0] = True
 
-    distancias[verticeInicial] = 0
+    distanciaDoInicial[verticeInicial] = 0
 
     while False in foiVisitado:
-        verticesNaoVisitados = [i for i, x in enumerate(foiVisitado) if not x]
+        verticesNaoVisitados = [index for index, verticeFoiVisitado in enumerate(foiVisitado) if not verticeFoiVisitado]
+        distanciasNaoVisitadas = [distanciaDoInicial[i] for i in verticesNaoVisitados]
 
-        menorIndice = None
-        menorValor = 999999999999999
-        for vertice in verticesNaoVisitados:
-            if distancias[vertice] < menorValor:
-                menorValor = distancias[vertice]
-                menorIndice = vertice
+
+        menorDistancia = min(distanciasNaoVisitadas, default=None)
+        menorIndice = verticesNaoVisitados[distanciasNaoVisitadas.index(menorDistancia)]
 
         if menorIndice is None:
             break
 
-        vertice = menorIndice
+        verticeAtual = menorIndice
 
-        foiVisitado[vertice] = True
+        foiVisitado[verticeAtual] = True
 
-        vizinhosNaoVisitadosDoMaisProximo = \
-            {k: v for k, v in grafo.vizinhos(vertice).items() if not foiVisitado[k]}
+        vizinhosNaoVisitadosDoAtual = \
+            {vizinho: peso for vizinho, peso in grafo.vizinhos(verticeAtual).items() if not foiVisitado[vizinho]}
 
-        for vizinho, distancia in vizinhosNaoVisitadosDoMaisProximo.items():
-            distanciaSomada = (float(distancias[vertice]) + float(distancia))
-            if distancias[vizinho] > distanciaSomada:
-                distancias[vizinho] = distanciaSomada
+        for vizinho, peso in vizinhosNaoVisitadosDoAtual.items():
+            distanciaAtualizada = (float(distanciaDoInicial[verticeAtual]) + float(peso))
+            if distanciaDoInicial[vizinho] > distanciaAtualizada:
+                distanciaDoInicial[vizinho] = distanciaAtualizada
+                if antecessores[verticeAtual] is None:
+                    antecessores[verticeAtual] = []
                 if antecessores[vizinho] is None:
                     antecessores[vizinho] = []
-                antecessores[vizinho].append(vertice)
+                antecessores[vizinho] = antecessores[verticeAtual] + [verticeAtual]
 
-    return distancias, antecessores
+    antecessores[verticeInicial] = [verticeInicial]
+    printDijkstra(distanciaDoInicial, antecessores)
+    return distanciaDoInicial, antecessores
+
+
+def printDijkstra(distancias, antecessores):
+    for index in range(1,len(antecessores)):
+        array = str(antecessores[index])[1:-1]
+        print(str(index)+":",array+"; d="+str(distancias[index]))
