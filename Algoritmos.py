@@ -91,7 +91,7 @@ def buscaSubcicloEuleriano(grafo, vertice, foiVisitada):
         r, ciclo2 = buscaSubcicloEuleriano(grafo, x, foiVisitada)
 
         if not r:
-            return False, "nao tem subciclo euleriano a partir do vertice "
+            return False, "nao ha subciclo euleriano a partir do vertice "
 
         index = ciclo.index(x)
         ciclo.pop(index)
