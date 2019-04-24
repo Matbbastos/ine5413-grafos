@@ -1,36 +1,34 @@
+from collections import deque
+
 def buscaEmLargura(grafo, verticeInicial):
     qtdVertices = grafo.qtdVertices()
-    foiVisitado = [False] * (qtdVertices + 1)  # lista de status (foi visitado?) de cada vértice
-    distanciaDeS = [999999999] * (qtdVertices + 1)  # lista de distâncias de s a cada vértice
-    antecessores = [None] * (qtdVertices + 1)  # lista de antecessores de cada vértice
+    foiVisitado = [False] * (qtdVertices + 1)
+    distanciaDoInicial = [999999999] * (qtdVertices + 1)
+    antecessores = [None] * (qtdVertices + 1)
 
-    foiVisitado[verticeInicial] = True  # vértice inicial inicializa visitado
-    distanciaDeS[verticeInicial] = 0  # distância até s = 0
-    filaIterativa = [verticeInicial]  # enfila vértice s
+    foiVisitado[verticeInicial] = True
+    distanciaDoInicial[verticeInicial] = 0
+    filaIterativa = deque([verticeInicial])
 
     listaNiveis = {0: [verticeInicial]}
 
     while len(filaIterativa) != 0:
-        verticeAtual = filaIterativa.pop(0)
+        verticeAtual = filaIterativa.popleft()
         listaVizinhos = grafo.vizinhos(verticeAtual)
         for vizinho in listaVizinhos:
             if not foiVisitado[vizinho]:
                 foiVisitado[vizinho] = True
-                distanciaDeS[vizinho] = distanciaDeS[verticeAtual] + 1
+                distanciaDoInicial[vizinho] = distanciaDoInicial[verticeAtual] + 1
                 antecessores[vizinho] = verticeAtual
                 filaIterativa.append(vizinho)
 
-                vizinhosDoNivel = listaNiveis.get(distanciaDeS[vizinho], [])
+                vizinhosDoNivel = listaNiveis.get(distanciaDoInicial[vizinho], [])
                 vizinhosDoNivel.append(vizinho)
-                listaNiveis.update({distanciaDeS[vizinho]: vizinhosDoNivel})
+                listaNiveis.update({distanciaDoInicial[vizinho]: vizinhosDoNivel})
 
     printBuscaEmLargura(listaNiveis)
 
-
-    # for nivel in listaNiveis:
-    #     print(listaNiveis.get(nivel))
-
-    return (distanciaDeS, antecessores)
+    return (distanciaDoInicial, antecessores)
 
 def printBuscaEmLargura(listaNiveis):
     for key, value in listaNiveis.items():
@@ -56,12 +54,12 @@ def buscaSubcicloEuleriano(grafo, vertice, foiVisitada):
 
     while True:
         indexDasArestasNaoVisitadasLigadasAoVertice = \
-            list(filter(lambda i: not foiVisitada[i], grafo.getIndexDasArestasDoVertice(vertice)))
+            deque(list(filter(lambda i: not foiVisitada[i], grafo.getIndexDasArestasDoVertice(vertice))))
 
         if len(indexDasArestasNaoVisitadasLigadasAoVertice) == 0:
             return False, "nao tem indexes nao visitados ligados ao vertice"
         else:
-            indexDeArestaNaoVisitada = indexDasArestasNaoVisitadasLigadasAoVertice.pop(0)
+            indexDeArestaNaoVisitada = indexDasArestasNaoVisitadasLigadasAoVertice.popleft()
 
             foiVisitada[indexDeArestaNaoVisitada] = True
 
@@ -75,21 +73,20 @@ def buscaSubcicloEuleriano(grafo, vertice, foiVisitada):
             ciclo.append(vertice)
 
         if vertice == pontoFinal:
-            # TEM CICLO EULERIANO, CARAI
             break
 
     while True:
         arestasNaoVisitadas = [i for i, x in enumerate(foiVisitada) if not x]
 
-        verticesDoCicloComArestasNaoVisitadas = [
+        verticesDoCicloComArestasNaoVisitadas = deque([
             vertice for vertice in ciclo if
             listaTemItemNaOutraLista(grafo.getIndexDasArestasDoVertice(vertice), arestasNaoVisitadas)
-        ]
+        ])
 
         if len(verticesDoCicloComArestasNaoVisitadas) == 0:
             break
 
-        x = verticesDoCicloComArestasNaoVisitadas.pop(0)
+        x = verticesDoCicloComArestasNaoVisitadas.popleft()
 
         r, ciclo2 = buscaSubcicloEuleriano(grafo, x, foiVisitada)
 
