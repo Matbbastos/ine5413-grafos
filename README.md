@@ -6,7 +6,7 @@
 
 ## Uso do arquivo main.py
 
-Usage: main.py (<arquivoDeGrafo>) [options]
+Usage: main.py (arquivoDeGrafo) [options]
 
           main.py -h | --help
 
