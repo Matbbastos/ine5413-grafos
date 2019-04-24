@@ -1,13 +1,10 @@
 # Como Usar
 
-Dependências:
-    docopt
-
-## Para instalar
+## Instalar docopt
 
     pip3 install docopt
 
-## Uso do arquivo mais.py
+## Uso do arquivo main.py
 
 Usage: main.py (<arquivoDeGrafo>) [options]
 
@@ -20,3 +17,7 @@ Options:
   -l            executa Busca em Largura (requer opção -v)  
   -e            busca ciclo euleriano e o retorna  
   -d            executa algoritmo de Dijkstra a partir do vertice inicial (requer opção -v)
+
+  ### Exemplo
+
+    $ python3 main.py dolphins.net -l -v 2

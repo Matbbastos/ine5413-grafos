@@ -20,13 +20,13 @@ class Grafo:
         return len(self.arestas)
 
     def grau(self, vertice):
-        return len(self.vertices.get(vertice))
+        return (len(self.vertices.get(vertice)) - 2)
 
     def getIndexDasArestasDoVertice(self,vertice):
         return self.vertices.get(vertice).get("indexDasArestas")
 
     def rotulo(self, vertice):
-        return self.vertices.get(vertice).rotulo
+        return self.vertices.get(vertice).get("rotulo")
 
     def vizinhos(self, vertice):
         dicionarioVizinhosDoVertice = copy.copy(self.vertices.get(vertice))
@@ -38,7 +38,7 @@ class Grafo:
         return vertice2 in self.vertices.get(vertice1)
 
     def peso(self, vertice1, vertice2):
-        return self.vertices.get(vertice1).get(vertice2)
+        return self.vertices.get(vertice1).get(vertice2, "Infinito")
 
     def leArquivo(self, nomeArquivo):
         arquivo = open(nomeArquivo, "r")
