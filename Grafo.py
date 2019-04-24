@@ -29,10 +29,10 @@ class Grafo:
         return self.vertices.get(vertice).rotulo
 
     def vizinhos(self, vertice):
-        huehue = copy.copy(self.vertices.get(vertice))
-        huehue.pop("rotulo")
-        huehue.pop("indexDasArestas")
-        return huehue
+        dicionarioVizinhosDoVertice = copy.copy(self.vertices.get(vertice))
+        dicionarioVizinhosDoVertice.pop("rotulo")
+        dicionarioVizinhosDoVertice.pop("indexDasArestas")
+        return dicionarioVizinhosDoVertice
 
     def haAresta(self, vertice1, vertice2):
         return vertice2 in self.vertices.get(vertice1)
