@@ -152,6 +152,27 @@ def printDijkstra(distancias, antecessores):
         array = str(antecessores[index])[1:-1]
         print(str(index)+":",array+"; d="+str(distancias[index]))
 
+def floydWarshall(grafo):
+	distanciasAnteriores = [][]
+	distancias = [][]
+	for arestas in grafo.arestas:
+		distanciasAnteriores[aresta[0]][arestas[1]] = arestas[2]
+		
+	for k in range(grafo.qtdVertices()):
+		for linha in distanciasAnteriores[0]:
+			for coluna in distanciasAnteriores[1]:
+				distancias[linha][coluna] = min(distanciasAnteriores[linha][coluna], distanciasAnteriores[linha][k]+ distanciasAnteriores[k][coluna]) 
+		distanciasAnteriores = distancias
+		
+	printFloydWarshal(distancias)
+	return distancias
+		
+def printFloydWarshal(distancias):
+	contaLinhas = 1
+	for linha in distancias:
+		print(contaLinhas, str(linha)[1:-1])
+		contaLinhas += 1
+						
 def listaTemItemNaOutraLista(lista1, lista2):
     for item in lista1:
         if item in lista2:
