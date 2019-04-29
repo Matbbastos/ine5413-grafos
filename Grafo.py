@@ -56,7 +56,8 @@ class Grafo:
             if not taNaParteDeEdges:
                 vertice, rotulo = linha.split()
                 vertice = int(vertice)
-                self.vertices.update({vertice: {"rotulo": rotulo,"indexDasArestas":[]}})
+                self.vertices.update(
+                    {vertice: {"rotulo": rotulo, "indexDasArestas": []}})
 
             if taNaParteDeEdges:
                 vertice, vizinho, peso = linha.split()
@@ -66,12 +67,18 @@ class Grafo:
 
                 size = len(self.arestas)
 
-                indexesVizinho = self.vertices.get(vizinho).get("indexDasArestas")
+                indexesVizinho = self.vertices.get(
+                    vizinho).get("indexDasArestas")
                 indexesVizinho.append(size)
-                self.vertices.get(vizinho).update({vertice: peso,"indexDasArestas": indexesVizinho})
+                self.vertices.get(
+                    vizinho).update({vertice: peso,
+                                    "indexDasArestas": indexesVizinho})
 
-                indexesVertice = self.vertices.get(vertice).get("indexDasArestas")
+                indexesVertice = self.vertices.get(
+                    vertice).get("indexDasArestas")
                 indexesVertice.append(size)
-                self.vertices.get(vertice).update({vizinho: peso,"indexDasArestas": indexesVertice})
+                self.vertices.get(
+                    vertice).update({vizinho: peso,
+                                    "indexDasArestas": indexesVertice})
 
                 self.arestas.append((vertice, vizinho, peso))

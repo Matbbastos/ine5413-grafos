@@ -1,5 +1,5 @@
 from collections import deque
-import pprint
+
 
 def buscaEmLargura(grafo, verticeInicial):
     qtdVertices = grafo.qtdVertices()
@@ -58,7 +58,10 @@ def buscaSubcicloEuleriano(grafo, vertice, foiVisitada):
 
     while True:
         indexDasArestasNaoVisitadasLigadasAoVertice = \
-            deque(list(filter(lambda i: not foiVisitada[i], grafo.getIndexDasArestasDoVertice(vertice))))
+            deque(
+                list(filter(
+                     lambda i: not foiVisitada[i],
+                     grafo.getIndexDasArestasDoVertice(vertice))))
 
         if len(indexDasArestasNaoVisitadasLigadasAoVertice) == 0:
             return False, "nao tem indexes nao visitados ligados ao vertice"
@@ -122,7 +125,11 @@ def dijkstra(grafo, verticeInicial):
     distanciaDoInicial[verticeInicial] = 0
 
     while False in foiVisitado:
-        verticesNaoVisitados = [index for index, verticeFoiVisitado in enumerate(foiVisitado) if not verticeFoiVisitado]
+        verticesNaoVisitados = [
+            index for index, verticeFoiVisitado
+            in enumerate(foiVisitado)
+            if not verticeFoiVisitado]
+
         distanciasNaoVisitadas = [distanciaDoInicial[i] for i in verticesNaoVisitados]
 
         menorDistancia = min(distanciasNaoVisitadas, default=None)
@@ -136,10 +143,13 @@ def dijkstra(grafo, verticeInicial):
         foiVisitado[verticeAtual] = True
 
         vizinhosNaoVisitadosDoAtual = \
-            {vizinho: peso for vizinho, peso in grafo.vizinhos(verticeAtual).items() if not foiVisitado[vizinho]}
+            {vizinho: peso
+             for vizinho, peso in grafo.vizinhos(verticeAtual).items()
+             if not foiVisitado[vizinho]}
 
         for vizinho, peso in vizinhosNaoVisitadosDoAtual.items():
-            distanciaAtualizada = (float(distanciaDoInicial[verticeAtual]) + float(peso))
+            distanciaAtualizada = (
+                float(distanciaDoInicial[verticeAtual]) + float(peso))
             if distanciaDoInicial[vizinho] > distanciaAtualizada:
                 distanciaDoInicial[vizinho] = distanciaAtualizada
                 if antecessores[verticeAtual] is None:
@@ -180,7 +190,7 @@ def floydWarshall(grafo):
         for linha in range(len(distanciasAnteriores)):
             for coluna in range(len(distanciasAnteriores[linha])):
                 distancias[linha][coluna] = min(
-                    distancias[linha][coluna], 
+                    distancias[linha][coluna],
                     distancias[linha][k] +
                     distancias[k][coluna])
         distanciasAnteriores = distancias
