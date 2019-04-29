@@ -171,29 +171,23 @@ def printDijkstra(distancias, antecessores):
 
 def floydWarshall(grafo):
     nroVertices = grafo.qtdVertices()
-    distanciasAnteriores = [
+    distancias = [
         [99999 for i in range(nroVertices)] for i in range(nroVertices)]
 
     for vertice in range(nroVertices):
-        distanciasAnteriores[vertice][vertice] = 0
-        for vizinho in grafo.getIndexDasArestasDoVertice(vertice+1):
-            aresta = grafo.arestas[vizinho]
-            distanciasAnteriores[aresta[0]-1][aresta[1]-1] = aresta[2]
-
-    distancias = distanciasAnteriores
+        distancias[vertice][vertice] = 0
 
     for aresta in grafo.arestas:
-        distanciasAnteriores[aresta[0]-1][aresta[1]-1] = aresta[2]
-        distanciasAnteriores[aresta[1]-1][aresta[0]-1] = aresta[2]
+        distancias[aresta[0]-1][aresta[1]-1] = aresta[2]
+        distancias[aresta[1]-1][aresta[0]-1] = aresta[2]
 
-    for k in range(len(distanciasAnteriores)):
-        for linha in range(len(distanciasAnteriores)):
-            for coluna in range(len(distanciasAnteriores[linha])):
+    for k in range(len(distancias)):
+        for linha in range(len(distancias)):
+            for coluna in range(len(distancias[linha])):
                 distancias[linha][coluna] = min(
                     distancias[linha][coluna],
                     distancias[linha][k] +
                     distancias[k][coluna])
-        distanciasAnteriores = distancias
 
     printFloydWarshal(distancias)
     return distancias
