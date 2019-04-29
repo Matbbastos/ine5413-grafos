@@ -22,7 +22,7 @@ class Grafo:
     def grau(self, vertice):
         return (len(self.vertices.get(vertice)) - 2)
 
-    def getIndexDasArestasDoVertice(self,vertice):
+    def getIndexDasArestasDoVertice(self, vertice):
         return self.vertices.get(vertice).get("indexDasArestas")
 
     def rotulo(self, vertice):

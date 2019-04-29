@@ -1,4 +1,5 @@
 from collections import deque
+import pprint
 
 def buscaEmLargura(grafo, verticeInicial):
     qtdVertices = grafo.qtdVertices()
@@ -30,9 +31,11 @@ def buscaEmLargura(grafo, verticeInicial):
 
     return (distanciaDoInicial, antecessores)
 
+
 def printBuscaEmLargura(listaNiveis):
     for key, value in listaNiveis.items():
         print(str(key) + ":", str(value)[1:-1])
+
 
 def algoritmoDeHierholzer(grafo):
     qtdDeArestas = grafo.qtdArestas()
@@ -47,6 +50,7 @@ def algoritmoDeHierholzer(grafo):
         existe, resultado = True, ciclo
     printaCiclo(existe, resultado)
     return existe, resultado
+
 
 def buscaSubcicloEuleriano(grafo, vertice, foiVisitada):
     ciclo = [vertice]
@@ -99,12 +103,14 @@ def buscaSubcicloEuleriano(grafo, vertice, foiVisitada):
 
     return True, ciclo
 
+
 def printaCiclo(existe, resultado):
     if existe:
         print(1)
         print(str(resultado)[1:-1])
     else:
         print(0)
+
 
 def dijkstra(grafo, verticeInicial):
     qtdVertices = grafo.qtdVertices()
@@ -118,7 +124,6 @@ def dijkstra(grafo, verticeInicial):
     while False in foiVisitado:
         verticesNaoVisitados = [index for index, verticeFoiVisitado in enumerate(foiVisitado) if not verticeFoiVisitado]
         distanciasNaoVisitadas = [distanciaDoInicial[i] for i in verticesNaoVisitados]
-
 
         menorDistancia = min(distanciasNaoVisitadas, default=None)
         menorIndice = verticesNaoVisitados[distanciasNaoVisitadas.index(menorDistancia)]
@@ -147,32 +152,50 @@ def dijkstra(grafo, verticeInicial):
     printDijkstra(distanciaDoInicial, antecessores)
     return distanciaDoInicial, antecessores
 
+
 def printDijkstra(distancias, antecessores):
-    for index in range(1,len(antecessores)):
+    for index in range(1, len(antecessores)):
         array = str(antecessores[index])[1:-1]
-        print(str(index)+":",array+"; d="+str(distancias[index]))
+        print(str(index)+":", array+"; d="+str(distancias[index]))
+
 
 def floydWarshall(grafo):
-	distanciasAnteriores = [][]
-	distancias = [][]
-	for arestas in grafo.arestas:
-		distanciasAnteriores[aresta[0]][arestas[1]] = arestas[2]
-		
-	for k in range(grafo.qtdVertices()):
-		for linha in distanciasAnteriores[0]:
-			for coluna in distanciasAnteriores[1]:
-				distancias[linha][coluna] = min(distanciasAnteriores[linha][coluna], distanciasAnteriores[linha][k]+ distanciasAnteriores[k][coluna]) 
-		distanciasAnteriores = distancias
-		
-	printFloydWarshal(distancias)
-	return distancias
-		
+    nroVertices = grafo.qtdVertices()
+    distanciasAnteriores = [
+        [99999 for i in range(nroVertices)] for i in range(nroVertices)]
+
+    for vertice in range(nroVertices):
+        distanciasAnteriores[vertice][vertice] = 0
+        for vizinho in grafo.getIndexDasArestasDoVertice(vertice+1):
+            aresta = grafo.arestas[vizinho]
+            distanciasAnteriores[aresta[0]-1][aresta[1]-1] = aresta[2]
+
+    distancias = distanciasAnteriores
+
+    for aresta in grafo.arestas:
+        distanciasAnteriores[aresta[0]-1][aresta[1]-1] = aresta[2]
+        distanciasAnteriores[aresta[1]-1][aresta[0]-1] = aresta[2]
+
+    for k in range(len(distanciasAnteriores)):
+        for linha in range(len(distanciasAnteriores)):
+            for coluna in range(len(distanciasAnteriores[linha])):
+                distancias[linha][coluna] = min(
+                    distancias[linha][coluna], 
+                    distancias[linha][k] +
+                    distancias[k][coluna])
+        distanciasAnteriores = distancias
+
+    printFloydWarshal(distancias)
+    return distancias
+
+
 def printFloydWarshal(distancias):
-	contaLinhas = 1
-	for linha in distancias:
-		print(contaLinhas, str(linha)[1:-1])
-		contaLinhas += 1
-						
+    contaLinhas = 1
+    for linha in distancias:
+        print(str(contaLinhas) + ":",  str(linha)[1:-1])
+        contaLinhas += 1
+
+
 def listaTemItemNaOutraLista(lista1, lista2):
     for item in lista1:
         if item in lista2:

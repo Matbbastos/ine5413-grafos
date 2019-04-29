@@ -8,6 +8,7 @@ Options:
   -l            executa Busca em Largura (requer opção -v)
   -e            busca ciclo euleriano e o retorna
   -d            executa algoritmo de Dijkstra a partir do vertice inicial (requer opção -v)
+  -f            executa algoritmo de Floyd-Warshall
 """
 import Algoritmos
 from Grafo import Grafo
@@ -24,7 +25,7 @@ def check_args(args):
 def selecionaAlgoritmos(args):
     grafo = Grafo(args['<arquivoDeGrafo>'])
     vertice = int(args['-v'] or 1)
-    executaTodos = not(args['-l'] or args['-e'] or args['-d'])
+    executaTodos = not(args['-l'] or args['-e'] or args['-d'] or args['-f'])
 
     if args['-l'] or executaTodos:
         print("\nExecutando Busca em Largura a partir do vertice", vertice)
@@ -34,8 +35,11 @@ def selecionaAlgoritmos(args):
         Algoritmos.algoritmoDeHierholzer(grafo)
     if args['-d'] or executaTodos:
         print("\nExecutando Djikstra a partir do vertice", vertice)
-        Algoritmos.dijkstra(grafo, vertice)    
-  
+        Algoritmos.dijkstra(grafo, vertice)
+    if args['-f'] or executaTodos:
+        print("\nExecutando Floyd-Warshall")
+        Algoritmos.floydWarshall(grafo)
+
 
 if __name__ == '__main__':
     args = docopt(__doc__)
