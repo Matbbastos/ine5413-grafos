@@ -49,8 +49,8 @@ class Grafo:
             if "vertice" in linha:
                 continue
 
-            if "edge" in linha:
-                taNaParteDeEdges = True
+            if "edge" in linha or "arc" in linha:
+                taNaParteDeEdges = linha
                 continue
 
             if not taNaParteDeEdges:
@@ -66,13 +66,13 @@ class Grafo:
                 peso = float(peso)
 
                 size = len(self.arestas)
-
-                indexesVizinho = self.vertices.get(
-                    vizinho).get("indexDasArestas")
-                indexesVizinho.append(size)
-                self.vertices.get(
-                    vizinho).update({vertice: peso,
-                                    "indexDasArestas": indexesVizinho})
+                if "edge" in taNaParteDeEdges:
+                    indexesVizinho = self.vertices.get(
+                        vizinho).get("indexDasArestas")
+                    indexesVizinho.append(size)
+                    self.vertices.get(
+                        vizinho).update({vertice: peso,
+                                        "indexDasArestas": indexesVizinho})
 
                 indexesVertice = self.vertices.get(
                     vertice).get("indexDasArestas")
@@ -82,3 +82,12 @@ class Grafo:
                                     "indexDasArestas": indexesVertice})
 
                 self.arestas.append((vertice, vizinho, peso))
+
+    def getGrafoTransposto(self):
+        novoDicVertices = {}
+        novaListaArestas = []
+        for vertice, vizinho, peso in self.arestas:
+            novaListaArestas(vizinho, vertice, peso)
+            novoDicVertices.update({'vizinho': {}})
+        for vertice, vizinho, peso in novaListaArestas:
+            pass
