@@ -12,6 +12,7 @@ Options:
 """
 import Algoritmos
 from Grafo import Grafo
+import pprint
 from docopt import docopt
 
 
@@ -41,6 +42,15 @@ def selecionaAlgoritmos(args):
         Algoritmos.floydWarshall(grafo)
 
 
-if __name__ == '__main__':
-    args = docopt(__doc__)
-    check_args(args)
+# if __name__ == '__main__':
+#     args = docopt(__doc__)
+#     check_args(args)
+
+
+g = Grafo("dolphins.net")
+# gt = g.getGrafoTransposto()
+# gtt = gt.getGrafoTransposto()
+# pp = pprint.PrettyPrinter(indent=2)
+# pp.pprint(gtt.arestas == g.arestas)
+A = Algoritmos.prim(g)
+print(A)

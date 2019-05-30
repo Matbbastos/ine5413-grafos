@@ -5,10 +5,11 @@ class Grafo:
     # vertices = { v1: {rotulo: "nome", v2:6,indexDasArestas:[5,6]}, v2: {rotulo: "nome", v3:5, v1:6}}
     # arestas [ (v1, v2, 6) (v2, v3, 2)]
 
-    def __init__(self, nomeDoArquivo):
-        self.vertices = {}
-        self.arestas = []
-        self.leArquivo(nomeDoArquivo)
+    def __init__(self, nomeDoArquivo=False, vertices={}, arestas=[]):
+        self.vertices = vertices
+        self.arestas = arestas
+        if nomeDoArquivo:
+            self.leArquivo(nomeDoArquivo)
 
     def getArestas(self):
         return self.arestas
@@ -38,7 +39,7 @@ class Grafo:
         return vertice2 in self.vertices.get(vertice1)
 
     def peso(self, vertice1, vertice2):
-        return self.vertices.get(vertice1).get(vertice2, "Infinito")
+        return self.vertices.get(vertice1).get(vertice2, 999999999)
 
     def leArquivo(self, nomeArquivo):
         arquivo = open(nomeArquivo, "r")
@@ -86,8 +87,19 @@ class Grafo:
     def getGrafoTransposto(self):
         novoDicVertices = {}
         novaListaArestas = []
+        for vertice in self.vertices.keys():
+            novoDicVertices.update(
+                    {vertice: {
+                        "rotulo": self.vertices.get(vertice).get('rotulo'),
+                        "indexDasArestas": []}})
+
         for vertice, vizinho, peso in self.arestas:
-            novaListaArestas(vizinho, vertice, peso)
-            novoDicVertices.update({'vizinho': {}})
-        for vertice, vizinho, peso in novaListaArestas:
-            pass
+            size = len(novaListaArestas)
+            indexesVizinho = novoDicVertices.get(
+                            vizinho).get("indexDasArestas")
+            indexesVizinho.append(size)
+            novoDicVertices.get(
+                vizinho).update({vertice: peso,
+                                "indexDasArestas": indexesVizinho})
+            novaListaArestas.append((vizinho, vertice, peso))
+        return Grafo(vertices=novoDicVertices, arestas=novaListaArestas)
