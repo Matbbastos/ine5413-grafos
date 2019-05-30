@@ -3,16 +3,13 @@ Usage: main.py (<arquivoDeGrafo>) [options]
           main.py -h | --help
 
 Options:
-  -h --help     se nao especificado, chamam-se todas as funcoes (com vertice inicial 1)
-  -v vertice    indica numero vertice inicial
-  -l            executa Busca em Largura (requer opção -v)
-  -e            busca ciclo euleriano e o retorna
-  -d            executa algoritmo de Dijkstra a partir do vertice inicial (requer opção -v)
-  -f            executa algoritmo de Floyd-Warshall
+  -h --help     se não especificado, chamam-se todas as funções
+  -c            executa algoritmo de componentes fortemente conexas
+  -o            executa algoritmo de ordenação topológica
+  -a            executa algoritmo de Prim para árvore geradora mínima
 """
 import Algoritmos
 from Grafo import Grafo
-import pprint
 from docopt import docopt
 
 
@@ -25,32 +22,24 @@ def check_args(args):
 
 def selecionaAlgoritmos(args):
     grafo = Grafo(args['<arquivoDeGrafo>'])
-    vertice = int(args['-v'] or 1)
-    executaTodos = not(args['-l'] or args['-e'] or args['-d'] or args['-f'])
+    executaTodos = not(args['-c'] or args['-o'] or args['-a'])
 
-    if args['-l'] or executaTodos:
-        print("\nExecutando Busca em Largura a partir do vertice", vertice)
-        Algoritmos.buscaEmLargura(grafo, vertice)
-    if args['-e'] or executaTodos:
-        print("\nBuscando Ciclo Euleriano")
-        Algoritmos.algoritmoDeHierholzer(grafo)
-    if args['-d'] or executaTodos:
-        print("\nExecutando Djikstra a partir do vertice", vertice)
-        Algoritmos.dijkstra(grafo, vertice)
-    if args['-f'] or executaTodos:
-        print("\nExecutando Floyd-Warshall")
-        Algoritmos.floydWarshall(grafo)
+    if args['-c'] or executaTodos:
+        print("\nExecutando Algoritmo de Componentes Fortemente Conexas")
+        Algoritmos.componentesFortementeConexas(grafo)
+    if args['-o'] or executaTodos:
+        print("\nExecutando Algoritmo de Ordenação Topológica")
+        Algoritmos.ordenacaoTopologica(grafo)
+    if args['-a'] or executaTodos:
+        print("\nExecutando Algoritmo de Árvore Geradora Mínima (Prim)")
+        Algoritmos.prim(grafo)
 
 
-# if __name__ == '__main__':
-#     args = docopt(__doc__)
-#     check_args(args)
+if __name__ == '__main__':
+    args = docopt(__doc__)
+    check_args(args)
 
 
 g = Grafo("dolphins.net")
-# gt = g.getGrafoTransposto()
-# gtt = gt.getGrafoTransposto()
-# pp = pprint.PrettyPrinter(indent=2)
-# pp.pprint(gtt.arestas == g.arestas)
-A = Algoritmos.prim(g)
-print(A)
+A, K = Algoritmos.prim(g)
+Algoritmos.printPrim(A, K)

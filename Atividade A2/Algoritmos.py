@@ -1,10 +1,3 @@
-def listaTemItemNaOutraLista(lista1, lista2):
-    for item in lista1:
-        if item in lista2:
-            return True
-    return False
-
-
 def componentesFortementeConexas(grafo):
     (c, t, a, f) = buscaEmProfundidade(grafo)
     grafoTrans = grafo.getGrafoTransposto()
@@ -58,33 +51,24 @@ def visitaEmProfundidade(grafo, vertice, foiVisitado, tempoAteVisita,
     return antecessores
 
 
+def ordenacaoTopologica(grafo):
+    pass
+
+
 def prim(grafo):
     verticeInicial = 1
-
     qtdVertices = grafo.qtdVertices()
     foiVisitado = [False] * (qtdVertices + 1)
     chaves = [999999999] * (qtdVertices + 1)
     antecessores = [None] * (qtdVertices + 1)
 
     chaves[verticeInicial] = 0
-    
     queue = [0] + list(grafo.vertices.keys())
 
     while len(queue) != 1:
-        # verticesNaoVisitados = [
-        #     index for index, verticeFoiVisitado in enumerate(foiVisitado)
-        #     if not verticeFoiVisitado]
-
-        # print("Vertices não visitados:", verticesNaoVisitados)
         chavesNaoVisitadas = [chaves[i] for i in queue]
-        print("Queue:", queue)
-        print("Chaves não visitadas:", chavesNaoVisitadas)
-
         menorChave = min(chavesNaoVisitadas)
-        
-        print("Menor chave:", menorChave)
-        indexMenorVertice = queue.index(menorChave)
-        print("Menor vértice:", indexMenorVertice)
+        indexMenorVertice = chavesNaoVisitadas.index(menorChave)
         menorVertice = queue.pop(indexMenorVertice)
         foiVisitado[menorVertice] = True
 
@@ -94,9 +78,20 @@ def prim(grafo):
                 antecessores[vizinho] = menorVertice
                 chaves[vizinho] = pesoAresta
 
-    return antecessores
+    return antecessores, chaves
 
 
-
-
-
+def printPrim(antecessores, chaves):
+    arestas = []
+    total = 0
+    for chave in chaves:
+        if chave < 999999999:
+            total += chave
+    print(total)
+    for index, v in enumerate(antecessores):
+        if v is not None:
+            arestas.append(', {}-{}'.format(index, v))
+    frmArestas = ''
+    for aresta in arestas:
+        frmArestas += str(aresta)
+    print(frmArestas[2:])
