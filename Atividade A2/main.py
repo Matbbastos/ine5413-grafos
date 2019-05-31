@@ -10,6 +10,7 @@ Options:
 """
 import Algoritmos
 from Grafo import Grafo
+from GrafoDirigido import GrafoDirigido
 from docopt import docopt
 
 
@@ -22,6 +23,7 @@ def check_args(args):
 
 def selecionaAlgoritmos(args):
     grafo = Grafo(args['<arquivoDeGrafo>'])
+    grafoDirigido = GrafoDirigido(args['<arquivoDeGrafo>'])
     executaTodos = not(args['-c'] or args['-o'] or args['-a'])
 
     if args['-c'] or executaTodos:
@@ -29,7 +31,7 @@ def selecionaAlgoritmos(args):
         Algoritmos.componentesFortementeConexas(grafo)
     if args['-o'] or executaTodos:
         print("\nExecutando Algoritmo de Ordenação Topológica")
-        Algoritmos.ordenacaoTopologica(grafo)
+        Algoritmos.ordenacaoTopologica(grafoDirigido)
     if args['-a'] or executaTodos:
         print("\nExecutando Algoritmo de Árvore Geradora Mínima (Prim)")
         Algoritmos.prim(grafo)

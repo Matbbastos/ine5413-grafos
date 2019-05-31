@@ -1,7 +1,7 @@
 import copy
 
 
-class Grafo:
+class GrafoDirigido:
     # vertices = { v1: {rotulo: "nome", v2:6,indexDasArestas:[5,6]}, v2: {rotulo: "nome", v3:5, v1:6}}
     # arestas [ (v1, v2, 6) (v2, v3, 2)]
 
@@ -70,13 +70,6 @@ class Grafo:
                 peso = float(peso)
 
                 size = len(self.arestas)
-                if "edge" in taNaParteDeEdges:
-                    indexesVizinho = self.vertices.get(
-                        vizinho).get("indexDasArestas")
-                    indexesVizinho.append(size)
-                    self.vertices.get(
-                        vizinho).update({vertice: peso,
-                                        "indexDasArestas": indexesVizinho})
 
                 indexesVertice = self.vertices.get(
                     vertice).get("indexDasArestas")
@@ -105,4 +98,4 @@ class Grafo:
                 vizinho).update({vertice: peso,
                                 "indexDasArestas": indexesVizinho})
             novaListaArestas.append((vizinho, vertice, peso))
-        return Grafo(vertices=novoDicVertices, arestas=novaListaArestas)
+        return GrafoDirigido(vertices=novoDicVertices, arestas=novaListaArestas)

@@ -52,7 +52,26 @@ def visitaEmProfundidade(grafo, vertice, foiVisitado, tempoAteVisita,
 
 
 def ordenacaoTopologica(grafo):
-    pass
+    foiVisitado = [False] * (grafo.qtdVertices()+1)
+    fila = []
+
+    for i in grafo.getVertices():
+        if foiVisitado[i] == False:
+            ordenacaoTopologicaSub(grafo, i, foiVisitado, fila)
+
+    for index, b in enumerate(fila):
+        print(grafo.rotulo(b), end='')
+        if index < len(fila) - 1:
+            print(' -> ', end='')
+
+def ordenacaoTopologicaSub(grafo, v, foiVisitado, fila):
+    foiVisitado[v] = True
+
+    for i in grafo.vizinhos(v):
+        if foiVisitado[i] == False:
+            ordenacaoTopologicaSub(grafo, i, foiVisitado, fila)
+
+    fila.insert(0, v)
 
 
 def prim(grafo):
