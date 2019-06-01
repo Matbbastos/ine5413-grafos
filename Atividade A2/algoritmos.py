@@ -56,19 +56,21 @@ def ordenacaoTopologica(grafo):
     fila = []
 
     for i in grafo.getVertices():
-        if foiVisitado[i] == False:
+        if not foiVisitado[i]:
             ordenacaoTopologicaSub(grafo, i, foiVisitado, fila)
 
     for index, b in enumerate(fila):
         print(grafo.rotulo(b), end='')
         if index < len(fila) - 1:
             print(' -> ', end='')
+    print()
+
 
 def ordenacaoTopologicaSub(grafo, v, foiVisitado, fila):
     foiVisitado[v] = True
 
     for i in grafo.vizinhos(v):
-        if foiVisitado[i] == False:
+        if not foiVisitado[i]:
             ordenacaoTopologicaSub(grafo, i, foiVisitado, fila)
 
     fila.insert(0, v)

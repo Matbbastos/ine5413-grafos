@@ -1,8 +1,8 @@
 *vertices 8
-1 parte1
-2 parte2
-3 parte3
-4 parte4
+1 levantar
+2 sair
+3 comer
+4 acordar
 *edges
 4 1 28.0
 1 3 35.0

@@ -8,9 +8,9 @@ Options:
   -o            executa algoritmo de ordenação topológica
   -a            executa algoritmo de Prim para árvore geradora mínima
 """
-import Algoritmos
-from Grafo import Grafo
-from GrafoDirigido import GrafoDirigido
+import algoritmos
+from grafo import Grafo
+from grafoDirigido import GrafoDirigido
 from docopt import docopt
 
 
@@ -28,13 +28,13 @@ def selecionaAlgoritmos(args):
 
     if args['-c'] or executaTodos:
         print("\nExecutando Algoritmo de Componentes Fortemente Conexas")
-        Algoritmos.componentesFortementeConexas(grafo)
+        algoritmos.componentesFortementeConexas(grafo)
     if args['-o'] or executaTodos:
         print("\nExecutando Algoritmo de Ordenação Topológica")
-        Algoritmos.ordenacaoTopologica(grafoDirigido)
+        algoritmos.ordenacaoTopologica(grafoDirigido)
     if args['-a'] or executaTodos:
         print("\nExecutando Algoritmo de Árvore Geradora Mínima (Prim)")
-        Algoritmos.prim(grafo)
+        algoritmos.prim(grafo)
 
 
 if __name__ == '__main__':
@@ -43,5 +43,5 @@ if __name__ == '__main__':
 
 
 g = Grafo("dolphins.net")
-A, K = Algoritmos.prim(g)
-Algoritmos.printPrim(A, K)
+A = algoritmos.componentesFortementeConexas(g)
+print(A)
