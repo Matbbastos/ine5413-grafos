@@ -3,9 +3,7 @@
 ## Instalar docopt
   Pacote necessário para execução com parâmetros via terminal
 
-  ```
-  pip3 install docopt
-  ```
+    pip3 install docopt
 
 ## Uso do arquivo main.py
 
@@ -14,7 +12,7 @@
 ### Options (para Atividade A1):
 
   * **-h --help**: se não especificado, chamam-se todas as funções (com vértice inicial 1, quando necessário)
-  * **-v --vertice**: indica número vértice inicial  
+  * **-v --vertice**: indica número do vértice inicial  
   * **-l**: executa Busca em Largura (requer opção -v)  
   * **-e**: busca ciclo euleriano e o retorna  
   * **-d**: executa algoritmo de Dijkstra a partir do vertice inicial (requer opção -v)
