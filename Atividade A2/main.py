@@ -27,8 +27,8 @@ def selecionaAlgoritmos(args):
     executaTodos = not(args['-c'] or args['-o'] or args['-a'])
 
     if args['-c'] or executaTodos:
-        print("\nExecutando Algoritmo de Componentes Fortemente Conexas")
-        algoritmos.componentesFortementeConexas(grafo)
+        print("\nExecutando Algoritmo de Componentes Fortemente Conexas (Kosaraju)")
+        algoritmos.kosaraju(grafo)
     if args['-o'] or executaTodos:
         print("\nExecutando Algoritmo de Ordenação Topológica")
         algoritmos.ordenacaoTopologica(grafoDirigido)
@@ -40,8 +40,3 @@ def selecionaAlgoritmos(args):
 if __name__ == '__main__':
     args = docopt(__doc__)
     check_args(args)
-
-
-g = Grafo("dolphins.net")
-A = algoritmos.componentesFortementeConexas(g)
-print(A)

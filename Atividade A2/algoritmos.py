@@ -1,59 +1,56 @@
-def componentesFortementeConexas(grafo):
-    (c, t, a, f) = buscaEmProfundidade(grafo)
-    grafoTrans = grafo.getGrafoTransposto()
-
-    (cT, tT, aT, fT) = buscaEmProfundidade(grafoTrans, f)
-    return aT
+from collections import deque
 
 
-def buscaEmProfundidade(grafo, fDecrescente=False):
+def dfsVisit(grafo, vertice, foiVisitado, stack):
+    if not foiVisitado[vertice]:
+        foiVisitado[vertice] = True
+        vizinhos = grafo.vizinhos(vertice).keys()
+        for vizinho in vizinhos:
+            dfsVisit(grafo, vizinho, foiVisitado, stack)
+        stack.appendleft(vertice)
+
+
+def assign(grafoReverso, vertice, raiz, foiDesignado, classes):
+    if not foiDesignado[vertice]:
+        classes[raiz].append(vertice)
+        foiDesignado[vertice] = True
+        vizinhos = grafoReverso.vizinhos(vertice).keys()
+        for vizinho in vizinhos:
+            assign(grafoReverso, vizinho, raiz, foiDesignado, classes)
+
+
+def kosaraju(grafo):
+    stack = deque([])
     qtdVertices = grafo.qtdVertices()
-
     foiVisitado = [False] * (qtdVertices + 1)
-    tempoAteVisita = [999999999] * (qtdVertices + 1)
-    tempoAposExploracao = [999999999] * (qtdVertices + 1)
-    # antecessores = [[] for i in range(qtdVertices + 1)]
-    antecessores = []
+    foiDesignado = [False] * (qtdVertices + 1)
 
-    tempo = 0
-    if not fDecrescente:
-        for vertice in grafo.vertices.keys():
-            if not foiVisitado[vertice]:
-                visitaEmProfundidade(grafo, vertice, foiVisitado, tempoAteVisita,
-                                     antecessores, tempoAposExploracao, tempo)
-    else:
-        fDecrescente[0] *= -1
-        for v in range(1, len(fDecrescente)):
-            vertice = fDecrescente.index(max(fDecrescente))
-            fDecrescente.pop(vertice)
-            if not foiVisitado[vertice]:
-                antecessores.append(
-                    visitaEmProfundidade(grafo, vertice, foiVisitado, tempoAteVisita,
-                                         [], tempoAposExploracao, tempo))
+    classes = [[] for i in range(qtdVertices + 1)]
 
-    return (foiVisitado, tempoAteVisita, antecessores, tempoAposExploracao)
+    grafoReverso = grafo.getGrafoTransposto()
+
+    for index, vertice in enumerate(grafo.vertices.keys()):
+        dfsVisit(grafo, vertice, foiVisitado, stack)
+
+    for vertice in stack:
+        assign(grafoReverso, vertice, vertice, foiDesignado, classes)
+
+    printComponentesFortementeConexas(classes)
+    return classes
 
 
-def visitaEmProfundidade(grafo, vertice, foiVisitado, tempoAteVisita,
-                         antecessores, tempoAposExploracao, tempo):
-    foiVisitado[vertice] = True
-    tempo += 1
-    tempoAteVisita[vertice] = tempo
-
-    for vizinho in grafo.vizinhos(vertice):
-        if not foiVisitado[vizinho]:
-            antecessores.append(vertice)
-            print(antecessores)
-            visitaEmProfundidade(grafo, vizinho, foiVisitado, tempoAteVisita,
-                                 antecessores, tempoAposExploracao, tempo)
-    tempo += 1
-    tempoAposExploracao[vertice] = tempo
-    return antecessores
+def printComponentesFortementeConexas(classes):
+    for classe in classes:
+        if len(classe) > 0:
+            listaClasse = []
+            for index, vertice in enumerate(classe):
+                listaClasse.append(vertice)
+            print(str(listaClasse)[1:-1])
 
 
 def ordenacaoTopologica(grafo):
     foiVisitado = [False] * (grafo.qtdVertices()+1)
-    fila = []
+    fila = deque([])
 
     for i in grafo.getVertices():
         if not foiVisitado[i]:
@@ -73,7 +70,7 @@ def ordenacaoTopologicaSub(grafo, v, foiVisitado, fila):
         if not foiVisitado[i]:
             ordenacaoTopologicaSub(grafo, i, foiVisitado, fila)
 
-    fila.insert(0, v)
+    fila.appendleft(v)
 
 
 def prim(grafo):
@@ -99,6 +96,7 @@ def prim(grafo):
                 antecessores[vizinho] = menorVertice
                 chaves[vizinho] = pesoAresta
 
+    printPrim(antecessores, chaves)
     return antecessores, chaves
 
 
