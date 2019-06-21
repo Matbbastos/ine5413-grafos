@@ -1,0 +1,17 @@
+*vertices 6
+1 Acordar
+2 TomarBanho
+3 LevantarDaCama
+4 EscovarOsDentes
+5 CalçarSandalhas
+6 DesligarDespertador
+*arcs
+1 6 2.0
+1 4 3.0
+1 3 1.0
+2 1 5.0
+3 2 1.0
+3 4 9.0
+5 6 1.0
+5 4 2.0
+6 5 1.0
