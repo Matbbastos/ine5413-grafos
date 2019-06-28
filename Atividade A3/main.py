@@ -4,9 +4,9 @@ Usage: main.py (<arquivoDeGrafo>) [options]
 
 Options:
   -h --help     se não especificado, chamam-se todas as funções
-  -c            executa algoritmo de componentes fortemente conexas
-  -o            executa algoritmo de ordenação topológica
-  -a            executa algoritmo de Prim para árvore geradora mínima
+  -f            executa algoritmo de Fluxo Máximo (Edmonds-Karp)
+  -e            executa algoritmo de Emparelhamento Máximo (Hopcroft-Karp)
+  -c            executa algoritmo de Coloração de Vértices
 """
 import algoritmos
 from grafo import Grafo
@@ -24,17 +24,17 @@ def check_args(args):
 def selecionaAlgoritmos(args):
     grafo = Grafo(args['<arquivoDeGrafo>'])
     grafoDirigido = GrafoDirigido(args['<arquivoDeGrafo>'])
-    executaTodos = not(args['-c'] or args['-o'] or args['-a'])
+    executaTodos = not(args['-f'] or args['-e'] or args['-c'])
 
+    if args['-f'] or executaTodos:
+        print("\nExecutando Algoritmo de Fluxo Máximo (Edmonds-Karp)")
+        algoritmos.edmondsKarp(grafo)
+    if args['-e'] or executaTodos:
+        print("\nExecutando Algoritmo de Emparelhamento Máximo (Hopcroft-Karp)")
+        algoritmos.hopcroftKarp(grafoDirigido)
     if args['-c'] or executaTodos:
-        print("\nExecutando Algoritmo de Componentes Fortemente Conexas (Kosaraju)")
-        algoritmos.kosaraju(grafo)
-    if args['-o'] or executaTodos:
-        print("\nExecutando Algoritmo de Ordenação Topológica")
-        algoritmos.ordenacaoTopologica(grafoDirigido)
-    if args['-a'] or executaTodos:
-        print("\nExecutando Algoritmo de Árvore Geradora Mínima (Prim)")
-        algoritmos.prim(grafo)
+        print("\nExecutando Algoritmo de Coloração de Vértices")
+        algoritmos.coloracao(grafo)
 
 
 if __name__ == '__main__':
