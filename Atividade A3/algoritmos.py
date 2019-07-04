@@ -79,7 +79,6 @@ def coloracao(grafo: Grafo):       # grafo não-dirigido e não-ponderado
 
     for vertice in vertices:
         cores_disponiveis = [True] * len(vertices)
-
         for vizinho in grafo.vizinhos(vertice):
             if vizinho in mapa_de_cores:
                 cor = mapa_de_cores[vizinho]
