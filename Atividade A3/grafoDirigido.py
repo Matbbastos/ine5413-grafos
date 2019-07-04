@@ -99,4 +99,5 @@ class GrafoDirigido:
                 vizinho).update({vertice: peso,
                                 "indexDasArestas": indexesVizinho})
             novaListaArestas.append((vizinho, vertice, peso))
-        return GrafoDirigido(vertices=novoDicVertices, arestas=novaListaArestas)
+        return GrafoDirigido(vertices=novoDicVertices,
+                             arestas=novaListaArestas)

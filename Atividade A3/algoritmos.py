@@ -1,40 +1,64 @@
 from collections import deque
 
 
-def edmondsKarp(grafo, verticeInicial, verticeFinal, redeResidual):
-    # grafo dirigido e ponderado
+def edmondsKarp(grafo, verticeInicial=1, verticeFinal=-1):
     qtdVertices = grafo.qtdVertices()
-    foiVisitado = [False] * (qtdVertices + 1)
-    antecessores = [None] * (qtdVertices + 1)
 
-    foiVisitado[verticeInicial] = True
-    filaIterativa = deque([verticeInicial])
+    if verticeFinal == -1:
+        verticeFinal = qtdVertices
 
-    # listaNiveis = {0: [verticeInicial]}
+    fluxo = 0
+    F = [[0 for y in range(qtdVertices + 1)] for x in range(qtdVertices + 1)]
 
-    while len(filaIterativa) != 0:
+    while True:
+        caminhoAumentante = [-1 for x in range(qtdVertices + 1)]
+        caminhoAumentante[verticeInicial] = -2
+
+        capacidadeResidual = [0 for x in range(qtdVertices + 1)]
+        capacidadeResidual[verticeInicial] = 999999999
+
+        filaIterativa = deque([verticeInicial])
+
+        fluxoCaminho, caminhoAumentante = BFSpEdmondsKarp(grafo,
+                                                          verticeInicial,
+                                                          verticeFinal, F,
+                                                          caminhoAumentante,
+                                                          capacidadeResidual,
+                                                          filaIterativa)
+        if fluxoCaminho == 0:
+            break
+
+        fluxo = fluxo + fluxoCaminho
+        verticeAtual = verticeFinal
+
+        while verticeAtual != verticeInicial:
+            vizinho = caminhoAumentante[verticeAtual]
+            F[vizinho][verticeAtual] = F[vizinho][verticeAtual] + fluxoCaminho
+            F[verticeAtual][vizinho] = F[verticeAtual][vizinho] - fluxoCaminho
+            verticeAtual = vizinho
+    print("Fluxo máximo de ", verticeInicial, " a ", verticeFinal, ": ",
+          fluxo, sep='')
+    return fluxo
+
+
+def BFSpEdmondsKarp(grafo, verticeInicial, verticeFinal, F,
+                    caminhoAumentante, capacidadeResidual, filaIterativa):
+    while len(filaIterativa) > 0:
         verticeAtual = filaIterativa.popleft()
-        listaVizinhos = grafo.vizinhos(verticeAtual)
-        for vizinho in listaVizinhos:
-            if not foiVisitado[vizinho] and (c(arestaEmQuestao) - f(arestaEmQuestao > 0)):
-                foiVisitado[vizinho] = True
-                antecessores[vizinho] = verticeAtual
+        for vizinho in grafo.vizinhos(verticeAtual):
+            residual = grafo.peso(verticeAtual, vizinho) - \
+                            F[verticeAtual][vizinho]
 
-                # vizinhosDoNivel = listaNiveis.get(distanciaDoInicial[vizinho], [])
-                # vizinhosDoNivel.append(vizinho)
-                # listaNiveis.update({distanciaDoInicial[vizinho]: vizinhosDoNivel})
-
-                if vizinho == verticeFinal:
-                    p = (verticeFinal)
-                    w = verticeFinal
-                    while w != verticeInicial:
-                        w = antecessores[w]
-                        p = (w) uniao p
-                    return p
-                filaIterativa.append(vizinho)
-
-    # printEdmondsKarp(listaNiveis)
-    return null
+            if (residual > 0) and (caminhoAumentante[vizinho] == -1):
+                caminhoAumentante[vizinho] = verticeAtual
+                capacidadeResidual[vizinho] = min(
+                                             capacidadeResidual[verticeAtual],
+                                             residual)
+                if vizinho is not verticeFinal:
+                    filaIterativa.append(vizinho)
+                else:
+                    return capacidadeResidual[verticeFinal], caminhoAumentante
+    return 0, caminhoAumentante
 
 
 def printEdmondsKarp(listaNiveis):

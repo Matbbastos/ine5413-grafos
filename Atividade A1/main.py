@@ -7,7 +7,7 @@ Options:
   -v vertice    indica numero vertice inicial
   -l            executa Busca em Largura (requer opção -v)
   -e            busca ciclo euleriano e o retorna
-  -d            executa algoritmo de Dijkstra a partir do vertice inicial (requer opção -v)
+  -d            executa algoritmo de Dijkstra a partir do vertice inicial (usa opção -v)
   -f            executa algoritmo de Floyd-Warshall
 """
 import Algoritmos
