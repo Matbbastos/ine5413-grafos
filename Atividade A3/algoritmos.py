@@ -1,4 +1,5 @@
 from collections import deque
+from grafo import Grafo
 
 
 def edmondsKarp(grafo, verticeInicial=1, verticeFinal=-1):
@@ -70,5 +71,27 @@ def hopcroftKarp(grafo):    # grafo bipartido, não-dirigido e não-ponderado
     pass
 
 
-def coloracao(grafo):       # grafo não-dirigido e não-ponderado
-    pass
+def coloracao(grafo: Grafo):       # grafo não-dirigido e não-ponderado
+    vertices = sorted(list(grafo.getVertices()), key=lambda x: len(grafo.vizinhos(x)), reverse=True)
+
+    mapa_de_cores = {}
+    cores_usadas = []
+
+    for vertice in vertices:
+        cores_disponiveis = [True] * len(vertices)
+
+        for vizinho in grafo.vizinhos(vertice):
+            if vizinho in mapa_de_cores:
+                cor = mapa_de_cores[vizinho]
+                cores_disponiveis[cor] = False
+
+        for cor, disponivel in enumerate(cores_disponiveis):
+            if disponivel:
+                mapa_de_cores[vertice] = cor
+                if cor not in cores_usadas:
+                    cores_usadas.append(cor)
+                break
+
+    print("Número mínimo de cores:",len(cores_usadas))
+    print("Mapeamento vértice-cor: ",mapa_de_cores)
+    return mapa_de_cores
