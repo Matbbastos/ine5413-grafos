@@ -2,15 +2,15 @@ import copy
 
 
 class Grafo:
-    # vertices = { v1: {rotulo: "nome", v2:6,indexDasArestas:[5,6]},
+    # vertices = { v1: {rotulo: "nome", v2:6, indexDasArestas:[5,6]},
     #              v2: {rotulo: "nome", v3:5, v1:6}}
     # arestas [ (v1, v2, 6) (v2, v3, 2)]
 
-    def __init__(self, nomeDoArquivo=False, vertices={}, arestas=[]):
+    def __init__(self, nomeDoArquivo=False, vertices={}, arestas=[], bipartido=False):
         self.vertices = vertices
         self.arestas = arestas
         if nomeDoArquivo:
-            self.leArquivo(nomeDoArquivo)
+            self.leArquivo(nomeDoArquivo, bipartido)
 
     def getArestas(self):
         return self.arestas
@@ -45,8 +45,10 @@ class Grafo:
     def peso(self, vertice1, vertice2):
         return self.vertices.get(vertice1).get(vertice2, 999999999)
 
-    def leArquivo(self, nomeArquivo):
+    def leArquivo(self, nomeArquivo, bipartido):
         arquivo = open(nomeArquivo, "r")
+        if bipartido:
+            self.leArquivoGrafoBipartido(arquivo)
 
         taNaParteDeEdges = False
 
@@ -107,3 +109,39 @@ class Grafo:
                                 "indexDasArestas": indexesVizinho})
             novaListaArestas.append((vizinho, vertice, peso))
         return Grafo(vertices=novoDicVertices, arestas=novaListaArestas)
+
+
+    def leArquivoGrafoBipartido(self, arquivo):
+        taNaParteDeEdges = False
+
+        for linha in arquivo:
+            if "vertice" in linha:
+                continue
+
+            if "edge" in linha or "arc" in linha:
+                taNaParteDeEdges = linha
+                continue
+
+            if not taNaParteDeEdges:
+                vertice, rotulo = linha.split()
+                vertice = int(vertice)
+                self.vertices.update(
+                    {vertice: {"rotulo": rotulo, "indexDasArestas": []}})
+
+            if taNaParteDeEdges:
+                vertice, vizinho, peso = linha.split()
+                vertice = int(vertice)
+                vizinho = int(vizinho)
+                peso = float(peso)
+
+                size = len(self.arestas)
+
+
+                indexesVertice = self.vertices.get(
+                    vertice).get("indexDasArestas")
+                indexesVertice.append(size)
+                self.vertices.get(
+                    vertice).update({vizinho: peso,
+                                    "indexDasArestas": indexesVertice})
+
+                self.arestas.append((vertice, vizinho, peso))

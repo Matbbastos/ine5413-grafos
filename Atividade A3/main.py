@@ -43,6 +43,7 @@ def selecionaAlgoritmos(args):
     if args['-e'] or executaTodos:
         print("\nExecutando Algoritmo de " +
               "Emparelhamento Máximo (Hopcroft-Karp)")
+        grafoDirigido = GrafoDirigido(args['<arquivoDeGrafo>'], bipartido=True)
         algoritmos.hopcroftKarp(grafoDirigido)
 
     if args['-c'] or executaTodos:
